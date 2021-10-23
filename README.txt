@@ -1,4 +1,6 @@
 ***GITHUB: https://github.com/Thariick/company-hero-challenge***
+***HEROKU: companyherochallenge***
+OBS: NÃO FOI POSSÍVEL SUBIR O APP NO HEROKU, POR ALGUM MOTIVO ESTÁ DANDO DIVERGÊNCIA NA VERSÃO DO BUILDPACKS, OU ALGO DO TIPO, NÃO SEI DIZER O QUE É, TENTEI 12 VEZES E NÃO FOI POSSÍVEL ARRUMAR, DESCULPA!
 
 -> Breve descrição de como foi feito a API e como utilizar e suas respostas:
 - Criar formulário para empresa: 
