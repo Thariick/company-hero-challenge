@@ -1,10 +1,14 @@
-from django.urls import path
+from django.urls import path, include
 from heroapi import views
+from rest_framework import routers
+
+route = routers.DefaultRouter()
+route.register(r'forms', views.Forms, basename = "forms")
 
 urlpatterns = [
-    path('', views.index, name = 'index'),
-    path('company/', views.CompanyList.as_view(), name = 'company'),
-    path('employees/', views.EmployeesList.as_view(), name = 'employees'),
-    path('company/<str:cnpj>', views.FilterCompany.as_view(), name = 'company'),
-    path('employees/<str:name>/', views.FilterEmployees.as_view(), name = 'employees')
-]
+    path('', include(route.urls)),
+    path('companies/', views.CompaniesList.as_view(), name = 'company'),
+    path('employees/', views.EmployeesList.as_view(), name = 'employeer'),
+    path('company/<str:cnpj>', views.CompanyFilter.as_view(), name = 'company'),
+    path('employee/<str:name>/', views.EmployeeFilter.as_view(), name = 'employees')
+    ]

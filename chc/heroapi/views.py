@@ -1,4 +1,5 @@
 from warnings import catch_warnings
+from django.forms.forms import Form
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, request
 from django.shortcuts import get_list_or_404
@@ -8,16 +9,28 @@ from rest_framework import serializers, status
 from .models import Company, Employees
 from .serializer import CompanySerializer, EmployeesSerializer
 from .forms import RegistrationForm
+from heroapi import forms
+from heroapi import models
+from heroapi import serializer
+from heroapi import views
+from rest_framework import viewsets
 
-def index(request):
-    form = RegistrationForm()
-    context = {
-        "companyform": form
-    }
-    return render(request, "heroapi/index", context)
+#def index(request):
+    #form = RegistrationForm()
+    #context = {
+        #"companyform": form
+    #}
+    #return render(request, "heroapi/index", context)
 
 
-class CompanyList(APIView):
+class Forms(viewsets.ModelViewSet):
+    queryset = models.Company.objects.all()
+    serializer_class = serializer.CompanySerializer
+    def get(self, request):
+        return Response(Forms)
+
+
+class CompaniesList(APIView):
     def get(self, request):
         companies = Company.objects.all()
         serializer = CompanySerializer(companies, many=True)
@@ -53,7 +66,7 @@ class EmployeesList(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class FilterEmployees(APIView):
+class EmployeeFilter(APIView):
     def get(self, request, name):
         get_employees = Employees.objects.filter(name = name)
         if get_employees:
@@ -67,27 +80,26 @@ class FilterEmployees(APIView):
                 companies.append(company.razao_social)
             employees['companies'] = companies
             return JsonResponse(employees, status=200)
-        return JsonResponse({'error': 'Funcionario não encontrado!'}, status=404)
+        return JsonResponse({'Funcionário não encontrado!'}, status=404)
 
-class FilterCompany(APIView):
+class CompanyFilter(APIView):
 
     def get(self, request, cnpj):
         get_company = Company.objects.filter(cnpj=cnpj)
         if get_company:
-            companied = {}
+            comp = {}
             employee = []
             employees = []
             for company in get_company:
-                companied['razao_social'] = company.razao_social
-                companied['nome_fantasia'] = company.nome_fantasia
-                companied['telefone_comercial'] = company.telefone_comercial
-                companied['inscricao_municipal_estadual'] = company.inscricao_municipal_estadual
-                companied['cnpj'] = company.cnpj
-                companied['endereco'] = company.endereco
-                companied['email'] = company.email
+                comp['razao_social'] = company.razao_social
+                comp['nome_fantasia'] = company.nome_fantasia
+                comp['telefone'] = company.telefone_comercial
+                comp['cnpj'] = company.cnpj
+                comp['endereco'] = company.endereco
+                comp['email'] = company.email
                 employeer = Employees.objects.filter(company=company.id)
                 for employ in employeer:
                     employees.append(employ.name)
-            companied['employeers'] = employees
-            return JsonResponse(companied, status=200)
-        return JsonResponse({'error': 'Empresa não encontrado!'}, status=404)
+            comp['employees'] = employees
+            return JsonResponse(comp, status=200)
+        return JsonResponse({'Empresa não encontrada!'}, status=404)
