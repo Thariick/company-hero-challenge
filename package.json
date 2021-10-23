@@ -3,5 +3,16 @@
       "url": "https://github.com/Thariick/company-hero-challenge"
     },
     {
-      "url": "heroku/python"}]
+      "url": "heroku/python"},
+      {
+        "requires": true,
+        "lockfileVersion": 1,
+        "dependencies": {
+          "python": {
+            "version": "0.0.4",
+            "resolved": "https://buildpack-registry.s3.amazonaws.com/buildpacks/heroku/python.tgz",
+            "integrity": "sha1-MJTomO8Xozqpw+lzs4SKOOR9GBg="
+          }
+        }
+      }]
 }
